@@ -397,6 +397,12 @@ class AdminModelConverter(ModelConverterBase):
         field_args['validators'].append(validators.IPAddress())
         return fields.StringField(**field_args)
 
+    @converts('sqlalchemy.dialects.postgresql.base.CIDR')
+    def conv_PGInet(self, field_args, **extra):
+        field_args.setdefault('label', u'IP Address')
+        field_args['validators'].append(validators.NetworkAddress())
+        return fields.StringField(**field_args)
+
     @converts('sqlalchemy.dialects.postgresql.base.MACADDR')
     def conv_PGMacaddr(self, field_args, **extra):
         field_args.setdefault('label', u'MAC Address')
